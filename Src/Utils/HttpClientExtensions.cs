@@ -1,0 +1,126 @@
+﻿using System;
+using System.Net.Http;
+using System.Xml.Serialization;
+using System.IO;
+
+namespace MpWeiXin.Utils
+{
+    /// <summary>
+    /// httpclient扩展
+    /// </summary>
+    internal static class HttpClientExtensions
+    {
+        /// <summary>
+        /// Gets the item.
+        /// </summary>
+        /// <typeparam name="TItem">The type of the item.</typeparam>
+        /// <param name="httpClient">The HTTP client.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="requestContent">Content of the request.</param>
+        /// <param name="errorCallback">The error callback.</param>
+        /// <param name="exceptionCallback">The exception callback.</param>
+        /// <returns></returns>
+        public static TItem GetItem<TItem>(this HttpClient httpClient, 
+                                           string url, 
+                                           HttpContent requestContent, 
+                                           Action<HttpContent> errorCallback = null,
+                                           Action<HttpContent, Exception> exceptionCallback = null) where TItem : class
+        {
+            HttpContent responseContent = null;
+            TItem result = null;
+
+            try
+            {
+                responseContent = GetResponse(httpClient, url, requestContent);
+
+                if (responseContent.Headers.ContentType.MediaType.ToLower() == "text/plain")
+                {
+                    responseContent.Headers.ContentType.MediaType = "application/json";
+                }
+
+                result = responseContent.ReadAsAsync<TItem>().Result;
+
+                // 如果读取对象成功返回
+                if (result != null)
+                {
+                    return result;
+                }
+
+                // 读取失败，尝试转换为WxError
+                if (errorCallback != null)
+                {
+                    // 处理错误
+                    errorCallback(responseContent);
+
+                    return null;
+                }
+
+                return result;
+            }
+            catch(Exception ex)
+            {
+                exceptionCallback?.Invoke(responseContent, ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the item.
+        /// </summary>
+        /// <typeparam name="TItem">The type of the item.</typeparam>
+        /// <param name="httpClient">The HTTP client.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="requestContent">Content of the request.</param>
+        /// <param name="callback">The callback.</param>
+        /// <returns></returns>
+        public static TItem GetXmlItem<TItem>(this HttpClient httpClient, string url, HttpContent requestContent, Action<Exception> errorCallback = null) where TItem : class
+        {
+            try
+            {
+                var responseContent = GetResponse(httpClient, url, requestContent);
+                string xml = responseContent.ReadAsStringAsync().Result;
+
+                var type = typeof(TItem);
+                var serializer = new XmlSerializer(type);
+                var sw = new StringReader(xml);
+
+                var obj = serializer.Deserialize(sw);
+
+                return obj as TItem;          
+            }
+            catch(Exception ex)
+            {
+                // 处理错误
+                errorCallback?.Invoke(ex);
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 发送请求返回原始内容
+        /// </summary>
+        /// <param name="httpClient">The HTTP client.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="requestContent">The content.</param>
+        /// <returns></returns>
+        public static HttpContent GetResponse(this HttpClient httpClient, string url, HttpContent requestContent)
+        {
+            try
+            {
+                var response = httpClient.PostAsync(url, requestContent).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response.Content;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+
+            return null;
+        }
+    }
+}

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C454BA64-AAF4-41D5-A44D-167D37324285}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MpWeiXin</RootNamespace>
+    <AssemblyName>MpWeiXin</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Caching\Extensions.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Caching\MemoryCacheManager.cs" />
+    <Compile Include="Models\AccessTokens\AccessTokenRequest.cs" />
+    <Compile Include="Models\AccessTokens\AccessTokenResponse.cs" />
+    <Compile Include="Models\Accounts\QrCodeActionInfo.cs" />
+    <Compile Include="Models\Accounts\QrCodeRequest.cs" />
+    <Compile Include="Models\Accounts\QrCodeResponse.cs" />
+    <Compile Include="Models\Accounts\Scene.cs" />
+    <Compile Include="Models\CustomerServices\CustomerMessage.cs" />
+    <Compile Include="Models\CustomerServices\CustomerMessageType.cs" />
+    <Compile Include="Models\CustomerServices\TextCustomerMessage.cs" />
+    <Compile Include="Models\Events\ClickEventNames.cs" />
+    <Compile Include="Models\Events\EventType.cs" />
+    <Compile Include="Models\TemplateMessages\WxCaptchaTemplateMessage.cs" />
+    <Compile Include="Models\TemplateMessages\WxTemplateMessage.cs" />
+    <Compile Include="Models\WebAuths\WebAuthAccessTokenRequest.cs" />
+    <Compile Include="Models\WebAuths\WebAuthAccessTokenResponse.cs" />
+    <Compile Include="Models\WeiXinSignature.cs" />
+    <Compile Include="Models\Messages\InComingMessages\EventMessage.cs" />
+    <Compile Include="Models\Messages\InComingMessages\Message.cs" />
+    <Compile Include="Models\Messages\InComingMessages\NormalMessage.cs" />
+    <Compile Include="Models\Messages\InComingMessages\QrCodeScanEventMessage.cs" />
+    <Compile Include="Models\Messages\MessageType.cs" />
+    <Compile Include="Models\Messages\ReplyMessages\ReplyMessage.cs" />
+    <Compile Include="Models\Messages\ReplyMessages\ReplyTextMessage.cs" />
+    <Compile Include="Models\WxConfig.cs" />
+    <Compile Include="Models\WxError.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\WxAccessTokenService.cs" />
+    <Compile Include="Services\WxAccountService.cs" />
+    <Compile Include="Services\WxHelper.cs" />
+    <Compile Include="Services\WxMessageService.cs" />
+    <Compile Include="Services\WxWebAuthService.cs" />
+    <Compile Include="Utils\HttpClientExtensions.cs" />
+    <Compile Include="Utils\JsonExtensions.cs" />
+    <Compile Include="Utils\Log.cs" />
+    <Compile Include="Utils\RequestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
