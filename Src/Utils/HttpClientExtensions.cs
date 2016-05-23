@@ -104,7 +104,9 @@ namespace MpWeiXin.Utils
         /// <param name="url">The URL.</param>
         /// <param name="requestContent">The content.</param>
         /// <returns></returns>
-        public static HttpContent GetResponse(this HttpClient httpClient, string url, HttpContent requestContent)
+        public static HttpContent GetResponse(this HttpClient httpClient, 
+                                              string url, 
+                                              HttpContent requestContent)
         {
             try
             {
@@ -115,9 +117,9 @@ namespace MpWeiXin.Utils
                     return response.Content;
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                return null;
+                throw ex;
             }
 
             return null;
