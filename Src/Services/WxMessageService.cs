@@ -33,7 +33,9 @@ namespace MpWeiXin.Services
         /// <param name="captcha">The captcha.</param>
         /// <param name="validateTime">The validate time.</param>
         /// <returns></returns>
-        public static WxError SendCaptcha(string toUser, string captcha, string validateTime)
+        public static WxError SendCaptcha(string toUser, string captcha, string validateTime,
+                                          string firstData = "您好，本次的验证码：",
+                                          string remarkData = "请妥善保管，切勿泄露。")
         {
             var color = "#000000";
             var message = new WxCaptchaTemplateMessage()
@@ -45,7 +47,7 @@ namespace MpWeiXin.Services
                 {
                     first = new WxTemplateMessage.TemplateValue()
                     {
-                        value = "您好，本次的验证码：",
+                        value = firstData,
                         color = color
                     },
                     keyword1 = new WxTemplateMessage.TemplateValue()
@@ -60,7 +62,7 @@ namespace MpWeiXin.Services
                     },
                     remark = new WxTemplateMessage.TemplateValue()
                     {
-                        value = "请妥善保管，切勿泄露。",
+                        value = remarkData,
                         color = color
                     }
                 }
