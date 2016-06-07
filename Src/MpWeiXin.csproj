@@ -86,7 +86,7 @@
     <Compile Include="Models\WxError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CustomerService.cs" />
-    <Compile Include="Services\IMessageContext.cs" />
+    <Compile Include="Services\Messages\ContextMessageManager.cs" />
     <Compile Include="Services\WxAccessTokenService.cs" />
     <Compile Include="Services\WxAccountService.cs" />
     <Compile Include="Services\WxHelper.cs" />

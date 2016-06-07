@@ -1,6 +1,8 @@
-﻿using MpWeiXin.Utils;
+﻿using System.Configuration;
+
+using MpWeiXin.Utils;
 using MpWeiXin.Models.AccessTokens;
-using System.Configuration;
+using MpWeiXin.Caching;
 
 namespace MpWeiXin.Services
 {

@@ -1,7 +1,5 @@
-﻿using MpWeiXin.Utils;
-using MpWeiXin.Utils;
+﻿using MpWeiXin.Caching;
 using MpWeiXin.Models.Accounts;
-using System.Collections.Generic;
 
 namespace MpWeiXin.Services
 {

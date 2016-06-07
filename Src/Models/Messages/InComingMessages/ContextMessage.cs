@@ -1,11 +1,19 @@
-﻿namespace MpWeiXin.Models.Messages.InComingMessages
+﻿using System.Collections.Generic;
+
+namespace MpWeiXin.Models.Messages.InComingMessages
 {
     /// <summary>
-    /// 上下文
+    /// 上下文消息
     /// </summary>
     public class ContextMessage
     {
+        public ContextMessage()
+        {
+            Messages = new List<Message>();
+        }
+
         public string Context { get; set; }
-        public Message Message { get; set; }
+
+        public IList<Message> Messages { get; set; }
     }
 }

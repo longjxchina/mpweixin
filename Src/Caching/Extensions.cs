@@ -1,6 +1,6 @@
 using System;
 
-namespace MpWeiXin.Utils
+namespace MpWeiXin.Caching
 {
     /// <summary>
     /// Extensions

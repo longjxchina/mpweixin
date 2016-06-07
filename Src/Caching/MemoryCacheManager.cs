@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Caching;
 using System.Text.RegularExpressions;
 
-namespace MpWeiXin.Utils
+namespace MpWeiXin.Caching
 {
     /// <summary>
     /// Represents a manager for caching between HTTP requests (long term caching)
@@ -17,7 +17,7 @@ namespace MpWeiXin.Utils
                 return MemoryCache.Default;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the value associated with the specified key.
         /// </summary>
@@ -37,11 +37,33 @@ namespace MpWeiXin.Utils
         /// <param name="cacheTime">Cache time</param>
         public virtual void Set(string key, object data, int cacheTime)
         {
+            Set(key, data, cacheTime, null);
+        }
+
+        /// <summary>
+        /// Adds the specified key and object to the cache.
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="data">Data</param>
+        /// <param name="cacheTime">Cache time</param>
+        public virtual void Set(string key, object data, int cacheTime, Action<CacheEntryRemovedArguments> removedCacheCallback)
+        {
             if (data == null)
                 return;
 
             var policy = new CacheItemPolicy();
+
             policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(cacheTime);
+
+            // »º´æÒÆ³ý»Øµ÷
+            if (removedCacheCallback != null)
+            {
+                policy.RemovedCallback = (args) =>
+                {
+                    removedCacheCallback(args);
+                };
+            }
+            
             Cache.Add(new CacheItem(key, data), policy);
         }
 

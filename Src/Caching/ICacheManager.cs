@@ -1,4 +1,7 @@
-namespace MpWeiXin.Utils
+using System;
+using System.Runtime.Caching;
+
+namespace MpWeiXin.Caching
 {
     /// <summary>
     /// Cache manager interface
@@ -20,6 +23,14 @@ namespace MpWeiXin.Utils
         /// <param name="data">Data</param>
         /// <param name="cacheTime">Cache time</param>
         void Set(string key, object data, int cacheTime);
+
+        /// <summary>
+        /// Adds the specified key and object to the cache.
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="data">Data</param>
+        /// <param name="cacheTime">Cache time</param>
+        void Set(string key, object data, int cacheTime, Action<CacheEntryRemovedArguments> removedCacheCallback);
 
         /// <summary>
         /// Gets a value indicating whether the value associated with the specified key is cached
