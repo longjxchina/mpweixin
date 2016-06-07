@@ -77,7 +77,7 @@
     <Compile Include="Models\WeiXinSignature.cs" />
     <Compile Include="Models\Messages\InComingMessages\EventMessage.cs" />
     <Compile Include="Models\Messages\InComingMessages\Message.cs" />
-    <Compile Include="Models\Messages\InComingMessages\NormalMessage.cs" />
+    <Compile Include="Models\Messages\InComingMessages\TextMessage.cs" />
     <Compile Include="Models\Messages\InComingMessages\QrCodeScanEventMessage.cs" />
     <Compile Include="Models\Messages\MessageType.cs" />
     <Compile Include="Models\Messages\ReplyMessages\ReplyMessage.cs" />
