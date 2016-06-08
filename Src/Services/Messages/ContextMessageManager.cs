@@ -99,6 +99,11 @@ namespace MpWeiXin.Services.Messages
         /// <returns></returns>
         public ContextMessage GetContextMessage(string openId)
         {
+            if(!Messages.ContainsKey(openId))
+            {
+                return null;
+            }
+
             return Messages[openId];
         }
     }
