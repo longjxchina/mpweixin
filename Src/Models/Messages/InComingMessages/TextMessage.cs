@@ -38,6 +38,11 @@ namespace MpWeiXin.Models.Messages.InComingMessages
 
         #endregion
 
+        public TextMessage()
+        {
+
+        }
+
         public TextMessage(string originMessage)
             : base(originMessage)
         {
