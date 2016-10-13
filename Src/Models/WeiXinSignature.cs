@@ -100,7 +100,7 @@ namespace MpWeiXin.Models
         /// <returns></returns>
         public bool ValidateSignature()
         {
-            var arrParams = new string[] { WxConfig.TOKEN, Timestamp, Nonce };
+            var arrParams = new string[] { WxConfig.Token, Timestamp, Nonce };
 
             Array.Sort(arrParams);
 

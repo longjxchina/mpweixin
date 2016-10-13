@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 
-using MpWeiXin.Utils;
 using MpWeiXin.Models.AccessTokens;
 using MpWeiXin.Caching;
+using MpWeiXin.Models;
+using MpWeiXin.Utils;
 
 namespace MpWeiXin.Services
 {
@@ -16,7 +17,7 @@ namespace MpWeiXin.Services
 
         public WxAccessTokenService()
         {
-            
+
         }
 
         /// <summary>
@@ -28,11 +29,16 @@ namespace MpWeiXin.Services
             var _cacheMgr = new MemoryCacheManager();
             var token = _cacheMgr.Get<string>(ACCESS_TOKEN_CACHE_KEY, 0, () =>
              {
-                 var isDebug = ConfigurationManager.AppSettings["IsDevelop"] == "1";
+                 var isDebug = WxConfig.IsDebug;
 
                  if (isDebug)
                  {
-                    return ConfigurationManager.AppSettings["WxToken"];
+                     var result = ConfigurationManager.AppSettings["WxAccessToken"];
+
+                     if (!string.IsNullOrEmpty(result))
+                     {
+                         return result;
+                     }
                  }
 
                  var request = new AccessTokenRequest();
@@ -54,7 +60,11 @@ namespace MpWeiXin.Services
                      }
 
                      _cacheMgr.Set(ACCESS_TOKEN_CACHE_KEY, tokenResult.access_token, tokenResult.expires_in / 60);
-                     Log.Error(string.Format("获取Token：{0}, 过期时间：{1}", tokenResult.access_token, tokenResult.expires_in));
+
+                     if (isDebug)
+                     {
+                         Log.Error(string.Format("获取Token：{0}, 过期时间：{1}", tokenResult.access_token, tokenResult.expires_in));
+                     }
                  }
 
                  return tokenResult.access_token;

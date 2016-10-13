@@ -11,8 +11,8 @@ namespace MpWeiXin.Models.WebAuths
     public class WebAuthAccessTokenRequest
     {
         public const string grant_type = "authorization_code";
-        public static readonly string appid = WxConfig.APP_ID;
-        public static readonly string secret = WxConfig.APP_SECRET;
+        public static readonly string appid = WxConfig.AppId;
+        public static readonly string secret = WxConfig.AppSecret;
         public string code { get; set; }
 
         public WebAuthAccessTokenRequest(string requestCode)

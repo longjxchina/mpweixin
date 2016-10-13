@@ -24,8 +24,9 @@ namespace MpWeiXin.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="api">The API.</param>
         /// <param name="data">The data.</param>
+        /// <param name="method">The method.</param>
         /// <returns></returns>
-        public static T Send<T>(string api, object data = null) where T : class
+        public static T Send<T>(string api, object data = null, HttpMethod method = null) where T : class
         {
             Action<HttpContent> errCallBack = (httpContent) =>
             {
@@ -58,7 +59,7 @@ namespace MpWeiXin.Services
                 Log.Error(string.Format("请求出错{0}，错误详情：{1}，内容：{2}", api, ex.Message, content), ex);
             };
 
-            return RequestHelper.Send<T>(api, data, errCallBack, exceptionHandler);
+            return RequestHelper.Send<T>(api, data, method, errCallBack, exceptionHandler);
         }
 
         /// <summary>

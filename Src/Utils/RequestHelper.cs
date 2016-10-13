@@ -15,11 +15,13 @@ namespace MpWeiXin.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="api">The API.</param>
         /// <param name="data">The data.</param>
+        /// <param name="method">The method.</param>
         /// <param name="errorCallback">The error callback.</param>
         /// <param name="exceptionCallback">The exception callback.</param>
         /// <returns></returns>
-        public static T Send<T>(string api, 
-                                object data = null, 
+        public static T Send<T>(string api,
+                                object data = null,
+                                HttpMethod method = null,
                                 Action<HttpContent> errorCallback = null,
                                 Action<HttpContent, Exception> exceptionCallback = null) where T : class
         {
@@ -28,7 +30,7 @@ namespace MpWeiXin.Utils
 
             httpContent = new StringContent(data.ToJson(), Encoding.UTF8, "application/json");
 
-            T result = httpClient.GetItem<T>(api, httpContent, errorCallback, exceptionCallback);
+            T result = httpClient.GetItem<T>(api, httpContent, method, errorCallback, exceptionCallback);
 
             return result;
         }

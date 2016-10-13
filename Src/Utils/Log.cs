@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MpWeiXin.Models;
+using System;
 using System.IO;
 
 namespace MpWeiXin.Utils
@@ -12,7 +13,10 @@ namespace MpWeiXin.Utils
 
         static Log()
         {
-            Config();
+            if (WxConfig.IsDebug)
+            {
+                Config();
+            }
         }
 
         public static void Config()

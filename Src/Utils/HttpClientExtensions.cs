@@ -20,18 +20,20 @@ namespace MpWeiXin.Utils
         /// <param name="errorCallback">The error callback.</param>
         /// <param name="exceptionCallback">The exception callback.</param>
         /// <returns></returns>
-        public static TItem GetItem<TItem>(this HttpClient httpClient, 
-                                           string url, 
-                                           HttpContent requestContent, 
-                                           Action<HttpContent> errorCallback = null,
-                                           Action<HttpContent, Exception> exceptionCallback = null) where TItem : class
+        public static TItem GetItem<TItem>(
+            this HttpClient httpClient, 
+            string url, 
+            HttpContent requestContent, 
+            HttpMethod method = null,
+            Action<HttpContent> errorCallback = null,
+            Action<HttpContent, Exception> exceptionCallback = null) where TItem : class
         {
             HttpContent responseContent = null;
             TItem result = null;
 
             try
             {
-                responseContent = GetResponse(httpClient, url, requestContent);
+                responseContent = GetResponse(httpClient, url, requestContent, method);
 
                 if (responseContent.Headers.ContentType.MediaType.ToLower() == "text/plain")
                 {
@@ -103,15 +105,33 @@ namespace MpWeiXin.Utils
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="url">The URL.</param>
         /// <param name="requestContent">The content.</param>
-        /// <returns></returns>
-        public static HttpContent GetResponse(this HttpClient httpClient, 
-                                              string url, 
-                                              HttpContent requestContent)
+        /// <param name="method">The method.</param>
+        /// <returns>
+        /// 响应
+        /// </returns>
+        public static HttpContent GetResponse(
+            this HttpClient httpClient, 
+            string url,            
+            HttpContent requestContent = null,
+            HttpMethod method = null)
         {
             try
             {
-                var response = httpClient.PostAsync(url, requestContent).Result;
+                HttpResponseMessage response;
 
+                method = method ?? HttpMethod.Post;
+
+                // get请求
+                if (method.Equals(HttpMethod.Get))
+                {
+                    response = httpClient.GetAsync(url).Result;
+                }
+                else // post请求
+                {
+                    response = httpClient.PostAsync(url, requestContent).Result;
+                }                
+
+                // 请求成功
                 if (response.IsSuccessStatusCode)
                 {
                     return response.Content;

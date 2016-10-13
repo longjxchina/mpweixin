@@ -1,4 +1,6 @@
-﻿namespace MpWeiXin.Models
+﻿using System.Configuration;
+
+namespace MpWeiXin.Models
 {
     /// <summary>
     /// 微信配置
@@ -8,16 +10,21 @@
         /// <summary>
         /// The ap p_ identifier
         /// </summary>
-        public const string APP_ID = "";
+        public static readonly string AppId = ConfigurationManager.AppSettings["WxAppId"];
 
         /// <summary>
         /// The ap p_ secret
         /// </summary>
-        public const string APP_SECRET = "";
+        public static readonly string AppSecret = ConfigurationManager.AppSettings["WxAppSecret"];
 
         /// <summary>
         /// The token
         /// </summary>
-        public const string TOKEN = "";
+        public static readonly string Token = ConfigurationManager.AppSettings["WxAppToken"];
+
+        /// <summary>
+        /// The is develop
+        /// </summary>
+        public static readonly bool IsDebug = ConfigurationManager.AppSettings["WxDebug"] == "1";
     }
 }

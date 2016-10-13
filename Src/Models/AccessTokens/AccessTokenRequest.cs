@@ -8,8 +8,8 @@
         public AccessTokenRequest()
         {
             grant_type = "client_credential";
-            appid = WxConfig.APP_ID;
-            secret = WxConfig.APP_SECRET;
+            appid = WxConfig.AppId;
+            secret = WxConfig.AppSecret;
         }
 
         /// <summary>

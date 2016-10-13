@@ -32,13 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('..\packages\log4net.2.0.5\lib\net40-full\log4net.dll')">..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
-      <HintPath Condition="Exists('..\..\packages\log4net.2.0.5\lib\net40-full\log4net.dll')">..\..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath Condition="Exists('..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll')">..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <HintPath Condition="Exists('..\..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll')">..\..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -75,6 +73,8 @@
     <Compile Include="Models\CustomerServices\TextCustomerMessage.cs" />
     <Compile Include="Models\Events\ClickEventNames.cs" />
     <Compile Include="Models\Events\EventType.cs" />
+    <Compile Include="Models\JsSdks\JsApiSign.cs" />
+    <Compile Include="Models\JsSdks\JsApiTicket.cs" />
     <Compile Include="Models\Messages\InComingMessages\ContextMessage.cs" />
     <Compile Include="Models\TemplateMessages\WxCaptchaTemplateMessage.cs" />
     <Compile Include="Models\TemplateMessages\WxTemplateMessage.cs" />
@@ -96,12 +96,14 @@
     <Compile Include="Services\WxAccessTokenService.cs" />
     <Compile Include="Services\WxAccountService.cs" />
     <Compile Include="Services\WxHelper.cs" />
+    <Compile Include="Services\WxJsSdkService.cs" />
     <Compile Include="Services\WxMessageService.cs" />
     <Compile Include="Services\WxWebAuthService.cs" />
     <Compile Include="Utils\HttpClientExtensions.cs" />
     <Compile Include="Utils\JsonExtensions.cs" />
     <Compile Include="Utils\Log.cs" />
     <Compile Include="Utils\RequestHelper.cs" />
+    <Compile Include="Utils\ShaHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
