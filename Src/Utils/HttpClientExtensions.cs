@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Xml.Serialization;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace MpWeiXin.Utils
 {
@@ -40,7 +41,22 @@ namespace MpWeiXin.Utils
                     responseContent.Headers.ContentType.MediaType = "application/json";
                 }
 
-                result = responseContent.ReadAsAsync<TItem>().Result;
+                dynamic returnVal = responseContent.ReadAsAsync<dynamic>().Result;
+                string json = returnVal.ToString();
+
+                // 如果请求返回错误信息，记录错误日志
+                if (returnVal != null 
+                    && returnVal.errcode != null 
+                    && returnVal.errcode.ToString() != "0")
+                {
+                    var errMsg = string.Format("请求出错信息：错误代码：{0}，错误消息：{1}", returnVal.errcode, returnVal.errmsg);
+
+                    Log.Error(errMsg);
+
+                    return null;
+                }
+
+                result = JsonConvert.DeserializeObject<TItem>(json);
 
                 // 如果读取对象成功返回
                 if (result != null)
@@ -49,13 +65,7 @@ namespace MpWeiXin.Utils
                 }
 
                 // 读取失败，尝试转换为WxError
-                if (errorCallback != null)
-                {
-                    // 处理错误
-                    errorCallback(responseContent);
-
-                    return null;
-                }
+                errorCallback?.Invoke(responseContent);
 
                 return result;
             }

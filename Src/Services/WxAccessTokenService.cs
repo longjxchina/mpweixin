@@ -61,10 +61,7 @@ namespace MpWeiXin.Services
 
                      _cacheMgr.Set(ACCESS_TOKEN_CACHE_KEY, tokenResult.access_token, tokenResult.expires_in / 60);
 
-                     if (isDebug)
-                     {
-                         Log.Error(string.Format("获取Token：{0}, 过期时间：{1}", tokenResult.access_token, tokenResult.expires_in));
-                     }
+                     Log.Info(string.Format("获取Token：{0}, 过期时间：{1}", tokenResult.access_token, tokenResult.expires_in));
                  }
 
                  return tokenResult.access_token;

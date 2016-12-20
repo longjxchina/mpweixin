@@ -49,7 +49,11 @@ namespace MpWeiXin.Services
                         _cacheMgr.Remove(JSAPI_TICKET__CACHE_KEY);
                     }
 
-                    _cacheMgr.Set(JSAPI_TICKET__CACHE_KEY, ticket.ticket, ticket.expires_in / 60);
+                    string theTicket = ticket.ticket;
+
+                    _cacheMgr.Set(JSAPI_TICKET__CACHE_KEY, theTicket, ticket.expires_in / 60);
+
+                    Log.Info(string.Format("获取JsApiTicket：{0}", theTicket));
 
                     return ticket.ticket;
                 }
