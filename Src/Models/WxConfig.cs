@@ -5,7 +5,7 @@ namespace MpWeiXin.Models
     /// <summary>
     /// 微信配置
     /// </summary>
-    public class WxConfig
+    internal class WxConfig
     {
         /// <summary>
         /// The ap p_ identifier

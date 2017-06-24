@@ -78,6 +78,7 @@
     <Compile Include="Models\Messages\InComingMessages\ContextMessage.cs" />
     <Compile Include="Models\TemplateMessages\WxCaptchaTemplateMessage.cs" />
     <Compile Include="Models\TemplateMessages\WxTemplateMessage.cs" />
+    <Compile Include="Models\WebAuths\UserInfoResponse.cs" />
     <Compile Include="Models\WebAuths\WebAuthAccessTokenRequest.cs" />
     <Compile Include="Models\WebAuths\WebAuthAccessTokenResponse.cs" />
     <Compile Include="Models\WeiXinSignature.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Utils\Log.cs" />
     <Compile Include="Utils\RequestHelper.cs" />
     <Compile Include="Utils\ShaHelper.cs" />
+    <Compile Include="WxMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
