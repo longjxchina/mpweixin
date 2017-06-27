@@ -49,11 +49,20 @@ namespace MpWeiXin.Utils
                     && returnVal.errcode != null 
                     && returnVal.errcode.ToString() != "0")
                 {
-                    var errMsg = string.Format("请求出错信息：错误代码：{0}，错误消息：{1}", returnVal.errcode, returnVal.errmsg);
+                    try
+                    {
+                        result = JsonConvert.DeserializeObject<TItem>(json);
 
-                    Log.Error(errMsg);
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        var errMsg = string.Format("请求出错信息：详情信息：{0}", ex.Message);
+                        
+                        Log.Error(errMsg);
 
-                    return null;
+                        return null;
+                    }
                 }
 
                 result = JsonConvert.DeserializeObject<TItem>(json);

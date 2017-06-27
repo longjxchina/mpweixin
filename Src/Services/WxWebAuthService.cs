@@ -1,4 +1,5 @@
-﻿using MpWeiXin.Models;
+﻿using MpWeiXin.Caching;
+using MpWeiXin.Models;
 using MpWeiXin.Models.WebAuths;
 using System;
 
@@ -14,6 +15,8 @@ namespace MpWeiXin.Services
         private const string USER_INFO_API = "https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN";
 
         private const string AUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state={3}#wechat_redirect";
+
+        private const string CACHE_KEY_AUTH_TOKEN = "AUTH_TOKEN";
 
         /// <summary>
         /// 获取Access Token
@@ -47,14 +50,25 @@ namespace MpWeiXin.Services
         public static WxMessage<UserInfoResponse> GetUserInfo(string code)
         {
             var result = new WxMessage<UserInfoResponse>();
-            var accessTokenResp = GetAccessToken(code);
+            var cacheMgr = new MemoryCacheManager();
+            var accessTokenResp = cacheMgr.Get<WebAuthAccessTokenResponse>(CACHE_KEY_AUTH_TOKEN);
 
-            if (!string.IsNullOrEmpty(accessTokenResp.errcode))
+            if (accessTokenResp == null)
+            {
+                accessTokenResp = GetAccessToken(code);
+
+                if (string.IsNullOrEmpty(accessTokenResp.errcode) || accessTokenResp.errcode == "0")
+                {
+                    cacheMgr.Set(CACHE_KEY_AUTH_TOKEN, accessTokenResp, accessTokenResp.expires_in / 60);
+                }
+            }
+
+            if (accessTokenResp == null || !string.IsNullOrEmpty(accessTokenResp.errcode))
             {
                 result.Data = new UserInfoResponse
                 {
-                    errcode = accessTokenResp.errcode,
-                    errmsg = accessTokenResp.errmsg
+                    errcode = accessTokenResp?.errcode,
+                    errmsg = accessTokenResp?.errmsg
                 };
                 result.AddError("获取AccessToken失败");
 
