@@ -51,17 +51,17 @@ namespace MpWeiXin.Services
         {
             var result = new WxMessage<UserInfoResponse>();
             var cacheMgr = new MemoryCacheManager();
-            var accessTokenResp = cacheMgr.Get<WebAuthAccessTokenResponse>(CACHE_KEY_AUTH_TOKEN);
+            var accessTokenResp = GetAccessToken(code);
 
-            if (accessTokenResp == null)
-            {
-                accessTokenResp = GetAccessToken(code);
+            //if (accessTokenResp == null)
+            //{
+            //    accessTokenResp = GetAccessToken(code);
 
-                if (string.IsNullOrEmpty(accessTokenResp.errcode) || accessTokenResp.errcode == "0")
-                {
-                    cacheMgr.Set(CACHE_KEY_AUTH_TOKEN, accessTokenResp, accessTokenResp.expires_in / 60);
-                }
-            }
+            //    if (string.IsNullOrEmpty(accessTokenResp.errcode) || accessTokenResp.errcode == "0")
+            //    {
+            //        cacheMgr.Set(CACHE_KEY_AUTH_TOKEN, accessTokenResp, accessTokenResp.expires_in / 60);
+            //    }
+            //}
 
             if (accessTokenResp == null || !string.IsNullOrEmpty(accessTokenResp.errcode))
             {
