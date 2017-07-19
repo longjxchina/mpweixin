@@ -8,23 +8,28 @@ namespace MpWeiXin.Models
     internal class WxConfig
     {
         /// <summary>
-        /// The ap p_ identifier
+        /// 微信app id
         /// </summary>
         public static readonly string AppId = ConfigurationManager.AppSettings["WxAppId"];
 
         /// <summary>
-        /// The ap p_ secret
+        /// 微信app密钥
         /// </summary>
         public static readonly string AppSecret = ConfigurationManager.AppSettings["WxAppSecret"];
 
         /// <summary>
-        /// The token
+        /// 微信app token
         /// </summary>
         public static readonly string Token = ConfigurationManager.AppSettings["WxAppToken"];
 
         /// <summary>
-        /// The is develop
+        /// 获取选项是否为开发模式
         /// </summary>
         public static readonly bool IsDebug = ConfigurationManager.AppSettings["WxDebug"] == "1";
+        
+        /// <summary>
+        /// IsDebug为true时设置的AccessToken
+        /// </summary>
+        public static readonly string WxAccessToken = ConfigurationManager.AppSettings["WxAccessToken"];
     }
 }

@@ -33,7 +33,7 @@ namespace MpWeiXin.Services
 
                  if (isDebug)
                  {
-                     var result = ConfigurationManager.AppSettings["WxAccessToken"];
+                     var result = WxConfig.WxAccessToken;
 
                      if (!string.IsNullOrEmpty(result))
                      {
