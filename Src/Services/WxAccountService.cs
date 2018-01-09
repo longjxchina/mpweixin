@@ -20,14 +20,32 @@ namespace MpWeiXin.Services
         /// </summary>
         private const string QR_CODE_API = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={0}";
 
+        /// <summary>
+        /// The qr code secene
+        /// </summary>
         private const string QR_CODE_SECENE = "QR_CODE_SECENE_{0}";
-        private ICacheManager _cachMgr;
+        /// <summary>
+        /// The cach MGR
+        /// </summary>
+        private ICacheManager cachMgr;
+        /// <summary>
+        /// The account SVC
+        /// </summary>
+        private WxAccountService accountSvc;
 
-        public WxAccountService()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WxAccountService" /> class.
+        /// </summary>
+        /// <param name="cachMgr">The cach MGR.</param>
+        /// <param name="accountSvc">The account SVC.</param>
+        public WxAccountService(
+            ICacheManager cachMgr,
+            WxAccountService accountSvc)
         {
-            _cachMgr = new MemoryCacheManager();
+            this.cachMgr = cachMgr;
+            this.accountSvc = accountSvc;
         }
-        
+
         /// <summary>
         /// 获取临时二维码
         /// </summary>
@@ -59,7 +77,6 @@ namespace MpWeiXin.Services
                     }
                 }
             };
-            var accountSvc = new WxAccountService();
             var response = WxHelper.Send<QrCodeResponse>(api, request);            
 
             if (response == null)
@@ -71,12 +88,12 @@ namespace MpWeiXin.Services
 
             var key = string.Format(QR_CODE_SECENE, sceneId);
 
-            if (_cachMgr.IsSet(key))
+            if (cachMgr.IsSet(key))
             {
-                _cachMgr.Remove(key);
+                cachMgr.Remove(key);
             }
 
-            _cachMgr.Set(key, sceneId, expire);
+            cachMgr.Set(key, sceneId, expire);
 
             #endregion
 
@@ -91,11 +108,11 @@ namespace MpWeiXin.Services
         public bool CheckScene(int scene)
         {
             var key = string.Format(QR_CODE_SECENE, scene);
-            var isValid = _cachMgr.IsSet(key);
+            var isValid = cachMgr.IsSet(key);
 
             if (isValid)
             {
-                _cachMgr.Remove(key);
+                cachMgr.Remove(key);
             }
 
             return isValid;

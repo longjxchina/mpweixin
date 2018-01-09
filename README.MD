@@ -1,6 +1,12 @@
 # 微信公众号开发 #
 ---
 
+## 依赖注入
+初始化组件需要完成以下依赖注入：
+
+- ContextMessageManager注册为单例
+- 注入ICacheManager实现，本程序默认实现了MemoryCacheManager内存缓存
+
 ## 功能 ##
 
 ### 验证签名 ###

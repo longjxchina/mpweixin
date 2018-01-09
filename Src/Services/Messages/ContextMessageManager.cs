@@ -14,47 +14,21 @@ namespace MpWeiXin.Services.Messages
         /// The messages.
         /// </value>
         protected Dictionary<string, ContextMessage> Messages { get; set; }
-
-        /// <summary>
-        /// 唯一实例
-        /// </summary>
-        private static readonly ContextMessageManager _instance;
-
+        
         /// <summary>
         /// 缓存管理对象
         /// </summary>
-        private ICacheManager _cacheMgr;
+        private ICacheManager cacheMgr;
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        private ContextMessageManager()
+        private ContextMessageManager(
+            ICacheManager cacheMgr)
         {
-            _cacheMgr = new MemoryCacheManager();
+            this.cacheMgr = cacheMgr;
             Messages = new Dictionary<string, ContextMessage>();
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        static ContextMessageManager()
-        {
-            _instance = new ContextMessageManager();
-        }
-
-        /// <summary>
-        /// 实例
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public static ContextMessageManager Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        }        
 
         /// <summary>
         /// 添加消息
@@ -72,7 +46,7 @@ namespace MpWeiXin.Services.Messages
 
                 Messages.Add(openId, messageList);
 
-                _cacheMgr.Set(openId, openId, 15, (args) =>
+                cacheMgr.Set(openId, openId, 15, (args) =>
                 {
                     Messages.Remove(openId);
                 });
@@ -89,7 +63,7 @@ namespace MpWeiXin.Services.Messages
         /// <param name="openId">The context.</param>
         public void RemoveContextMessage(string openId)
         {
-            _cacheMgr.Remove(openId);
+            cacheMgr.Remove(openId);
         }
 
         /// <summary>

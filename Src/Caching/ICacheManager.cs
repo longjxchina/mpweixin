@@ -6,7 +6,7 @@ namespace MpWeiXin.Caching
     /// <summary>
     /// Cache manager interface
     /// </summary>
-    internal interface ICacheManager
+    public interface ICacheManager
     {
         /// <summary>
         /// Gets or sets the value associated with the specified key.
