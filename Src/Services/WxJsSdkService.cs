@@ -30,28 +30,39 @@ namespace MpWeiXin.Services
         /// </summary>
         private const string JSAPI_TICKET__CACHE_KEY = "JSAPI_TICKET__CACHE_KEY";
 
+        private WxAccessTokenService accessTokenSvc;
+
+        private ICacheManager cacheMgr;
+
+        public WxJsSdkService(
+            WxAccessTokenService accessTokenSvc,
+            ICacheManager cacheMgr)
+        {
+            this.accessTokenSvc = accessTokenSvc;
+            this.cacheMgr = cacheMgr;
+        }
+
         /// <summary>
         /// 获取js api ticket
         /// </summary>
         /// <returns>ticket</returns>
-        public static string GetJsApiTicket()
+        public string GetJsApiTicket()
         {
-            var _cacheMgr = new MemoryCacheManager();
-            var token = _cacheMgr.Get(JSAPI_TICKET__CACHE_KEY, 0, () =>
+            var token = cacheMgr.Get(JSAPI_TICKET__CACHE_KEY, 0, () =>
             {
-                var api = string.Format(JSAPI_TICKET_API, WxAccessTokenService.GetToken());
+                var api = string.Format(JSAPI_TICKET_API, accessTokenSvc.GetToken());
                 var ticket = WxHelper.Send<JsApiTicket>(api, null, HttpMethod.Get);
 
                 if (ticket != null)
                 {
-                    if (_cacheMgr.IsSet(JSAPI_TICKET__CACHE_KEY))
+                    if (cacheMgr.IsSet(JSAPI_TICKET__CACHE_KEY))
                     {
-                        _cacheMgr.Remove(JSAPI_TICKET__CACHE_KEY);
+                        cacheMgr.Remove(JSAPI_TICKET__CACHE_KEY);
                     }
 
                     string theTicket = ticket.ticket;
 
-                    _cacheMgr.Set(JSAPI_TICKET__CACHE_KEY, theTicket, ticket.expires_in / 60);
+                    cacheMgr.Set(JSAPI_TICKET__CACHE_KEY, theTicket, ticket.expires_in / 60);
 
                     Log.Info(string.Format("获取JsApiTicket：{0}", theTicket));
 

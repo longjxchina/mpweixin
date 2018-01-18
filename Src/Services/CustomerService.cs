@@ -10,13 +10,21 @@ namespace MpWeiXin.Services
     {
         public const string SEND_API = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}";
 
+        private WxAccessTokenService accessTokenSvc;
+
+        public CustomerService(
+            WxAccessTokenService accessTokenSvc)
+        {
+            this.accessTokenSvc = accessTokenSvc;
+        }
+
         /// <summary>
         /// 发送消息
         /// </summary>
         /// <param name="message">The message.</param>
-        public static WxError Send(CustomerMessage message)
+        public WxError Send(CustomerMessage message)
         {
-            var api = string.Format(SEND_API, WxAccessTokenService.GetToken());
+            var api = string.Format(SEND_API, accessTokenSvc.GetToken());
 
             return WxHelper.Send<WxError>(api, message);
         }

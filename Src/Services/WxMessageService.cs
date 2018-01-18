@@ -13,14 +13,22 @@ namespace MpWeiXin.Services
         /// </summary>
         private const string TEMPLATE_MESSAGE_API = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}";
 
+        private WxAccessTokenService accessTokenSvc;
+
+        public WxMessageService(
+            WxAccessTokenService accessTokenSvc)
+        {
+            this.accessTokenSvc = accessTokenSvc;
+        }
+
         /// <summary>
         /// 发送模板消息
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        public static WxError SendTemplateMessage(WxTemplateMessage message)
+        public WxError SendTemplateMessage(WxTemplateMessage message)
         {
-            string api = string.Format(TEMPLATE_MESSAGE_API, WxAccessTokenService.GetToken());
+            string api = string.Format(TEMPLATE_MESSAGE_API, accessTokenSvc.GetToken());
             var result = WxHelper.Send<WxError>(api, message);
 
             return result;
@@ -33,7 +41,7 @@ namespace MpWeiXin.Services
         /// <param name="captcha">The captcha.</param>
         /// <param name="validateTime">The validate time.</param>
         /// <returns></returns>
-        public static WxError SendCaptcha(string toUser, string captcha, string validateTime,
+        public WxError SendCaptcha(string toUser, string captcha, string validateTime,
                                           string firstData = "您好，本次的验证码：",
                                           string remarkData = "请妥善保管，切勿泄露。")
         {

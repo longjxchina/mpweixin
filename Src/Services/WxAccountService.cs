@@ -1,5 +1,7 @@
 ﻿using MpWeiXin.Caching;
 using MpWeiXin.Models.Accounts;
+using MpWeiXin.Utils;
+using System.Net.Http;
 
 namespace MpWeiXin.Services
 {
@@ -21,6 +23,11 @@ namespace MpWeiXin.Services
         private const string QR_CODE_API = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={0}";
 
         /// <summary>
+        /// 获取用户基本信息(UnionID机制)
+        /// </summary>
+        private const string USER_INFO_API = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN";
+
+        /// <summary>
         /// The qr code secene
         /// </summary>
         private const string QR_CODE_SECENE = "QR_CODE_SECENE_{0}";
@@ -28,22 +35,20 @@ namespace MpWeiXin.Services
         /// The cach MGR
         /// </summary>
         private ICacheManager cachMgr;
-        /// <summary>
-        /// The account SVC
-        /// </summary>
-        private WxAccountService accountSvc;
+        private WxAccessTokenService accessTokenSvc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WxAccountService" /> class.
         /// </summary>
         /// <param name="cachMgr">The cach MGR.</param>
         /// <param name="accountSvc">The account SVC.</param>
+        /// <param name="accessTokenSvc">The access token SVC.</param>
         public WxAccountService(
             ICacheManager cachMgr,
-            WxAccountService accountSvc)
+            WxAccessTokenService accessTokenSvc)
         {
             this.cachMgr = cachMgr;
-            this.accountSvc = accountSvc;
+            this.accessTokenSvc = accessTokenSvc;
         }
 
         /// <summary>
@@ -64,7 +69,7 @@ namespace MpWeiXin.Services
         public string GetQrCodeTicket(int sceneId)
         {
             const int expire = 10;
-            var api = string.Format(TEMP_QR_CODE_TICKET_API, WxAccessTokenService.GetToken());
+            var api = string.Format(TEMP_QR_CODE_TICKET_API, accessTokenSvc.GetToken());
             var request = new QrCodeRequest()
             {   
                 expire_seconds = expire,
@@ -116,6 +121,28 @@ namespace MpWeiXin.Services
             }
 
             return isValid;
+        }
+
+        /// <summary>
+        /// 是否订阅
+        /// </summary>
+        /// <param name="openId">The open identifier.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified open identifier is subscribe; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsSubscribe(string openId)
+        {
+            if (string.IsNullOrEmpty(openId))
+            {
+                return false;
+            }
+
+            var api = string.Format(USER_INFO_API, accessTokenSvc.GetToken(), openId);
+            var userInfo = WxHelper.Send<UserInfo>(api, null, HttpMethod.Get);
+
+            Log.Debug($"获取用户信息：{userInfo?.ToJson()}");
+
+            return userInfo != null && userInfo.subscribe == 1;
         }
 
         #endregion

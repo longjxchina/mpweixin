@@ -64,6 +64,7 @@
     <Compile Include="Models\Accounts\QrCodeRequest.cs" />
     <Compile Include="Models\Accounts\QrCodeResponse.cs" />
     <Compile Include="Models\Accounts\Scene.cs" />
+    <Compile Include="Models\Accounts\UserInfo.cs" />
     <Compile Include="Models\CustomerServices\CustomerMessage.cs" />
     <Compile Include="Models\CustomerServices\CustomerMessageType.cs" />
     <Compile Include="Models\CustomerServices\TextCustomerMessage.cs" />

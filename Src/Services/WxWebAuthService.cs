@@ -18,6 +18,14 @@ namespace MpWeiXin.Services
 
         private const string CACHE_KEY_AUTH_TOKEN = "AUTH_TOKEN";
 
+        private ICacheManager cacheMgr;
+
+        public WxWebAuthService(
+            ICacheManager cacheMgr)
+        {
+            this.cacheMgr = cacheMgr;
+        }
+
         /// <summary>
         /// 获取Access Token
         /// </summary>
@@ -50,7 +58,6 @@ namespace MpWeiXin.Services
         public static WxMessage<UserInfoResponse> GetUserInfo(string code)
         {
             var result = new WxMessage<UserInfoResponse>();
-            var cacheMgr = new MemoryCacheManager();
             var accessTokenResp = GetAccessToken(code);
 
             //if (accessTokenResp == null)

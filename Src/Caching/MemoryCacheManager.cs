@@ -35,7 +35,7 @@ namespace MpWeiXin.Caching
         /// <param name="key">key</param>
         /// <param name="data">Data</param>
         /// <param name="cacheTime">Cache time</param>
-        public virtual void Set(string key, object data, int cacheTime)
+        public virtual void Set(string key, object data, int? cacheTime)
         {
             Set(key, data, cacheTime, null);
         }
@@ -46,24 +46,27 @@ namespace MpWeiXin.Caching
         /// <param name="key">key</param>
         /// <param name="data">Data</param>
         /// <param name="cacheTime">Cache time</param>
-        public virtual void Set(string key, object data, int cacheTime, Action<CacheEntryRemovedArguments> removedCacheCallback)
+        public virtual void Set(string key, object data, int? cacheTime, Action<CacheEntryRemovedArguments> removedCacheCallback)
         {
             if (data == null)
                 return;
 
             var policy = new CacheItemPolicy();
 
-            policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(cacheTime);
-
-            // »º´æÒÆ³ý»Øµ÷
-            if (removedCacheCallback != null)
+            if (cacheTime.HasValue)
             {
-                policy.RemovedCallback = (args) =>
+                policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(cacheTime.Value);
+
+                // »º´æÒÆ³ý»Øµ÷
+                if (removedCacheCallback != null)
                 {
-                    removedCacheCallback(args);
-                };
+                    policy.RemovedCallback = (args) =>
+                    {
+                        removedCacheCallback(args);
+                    };
+                }
             }
-            
+
             Cache.Add(new CacheItem(key, data), policy);
         }
 

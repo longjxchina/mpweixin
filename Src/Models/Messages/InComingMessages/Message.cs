@@ -86,7 +86,11 @@ namespace MpWeiXin.Models.Messages.InComingMessages
         public Message(string message)
         {
             OriginMessage = message;
-            MsgType = GetMessageProperty(MSG_TYPE);
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                MsgType = GetMessageProperty(MSG_TYPE);
+            }
         }
 
         #endregion

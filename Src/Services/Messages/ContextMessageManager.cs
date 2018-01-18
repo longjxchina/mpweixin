@@ -23,7 +23,7 @@ namespace MpWeiXin.Services.Messages
         /// <summary>
         /// 构造函数
         /// </summary>
-        private ContextMessageManager(
+        public ContextMessageManager(
             ICacheManager cacheMgr)
         {
             this.cacheMgr = cacheMgr;

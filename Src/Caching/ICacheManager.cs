@@ -22,7 +22,7 @@ namespace MpWeiXin.Caching
         /// <param name="key">key</param>
         /// <param name="data">Data</param>
         /// <param name="cacheTime">Cache time</param>
-        void Set(string key, object data, int cacheTime);
+        void Set(string key, object data, int? cacheTime);
 
         /// <summary>
         /// Adds the specified key and object to the cache.
@@ -30,7 +30,7 @@ namespace MpWeiXin.Caching
         /// <param name="key">key</param>
         /// <param name="data">Data</param>
         /// <param name="cacheTime">Cache time</param>
-        void Set(string key, object data, int cacheTime, Action<CacheEntryRemovedArguments> removedCacheCallback);
+        void Set(string key, object data, int? cacheTime, Action<CacheEntryRemovedArguments> removedCacheCallback);
 
         /// <summary>
         /// Gets a value indicating whether the value associated with the specified key is cached
