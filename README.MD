@@ -1,6 +1,9 @@
 # 微信公众号开发 #
 ---
 
+## .net core版本
+[https://github.com/longjxchina/MpWeiXinCore](https://github.com/longjxchina/MpWeiXinCore)
+
 ## 依赖注入
 初始化组件需要完成以下依赖注入：
 
